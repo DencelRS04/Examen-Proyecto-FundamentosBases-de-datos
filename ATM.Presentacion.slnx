@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="ATM.Datos/ATM.Datos.csproj" />
+  <Project Path="ATM.Entidades/ATM.Entidades.csproj" />
+  <Project Path="ATM.Presentacion/ATM.Presentacion.csproj" Id="b00fe113-73f1-4eb2-9cf0-d47d05c0ab70" />
+</Solution>
