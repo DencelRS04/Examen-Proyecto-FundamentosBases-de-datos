@@ -116,6 +116,7 @@
             this.Controls.Add(this.label1);
             this.Name = "FrmRetirar";
             this.Text = "FrmRetirar";
+            this.Load += new System.EventHandler(this.FrmRetirar_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

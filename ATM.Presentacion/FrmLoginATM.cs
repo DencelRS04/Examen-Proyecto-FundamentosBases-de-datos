@@ -75,13 +75,11 @@ namespace ATM.Presentacion
 
         private void FrmLoginATM_Load(object sender, EventArgs e)
         {
-            // Optional initialization on form load can go here.
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
-            // Intentionally left blank - this prevents the CS1061 error when the designer
-            // references this method. Add behavior here if needed (e.g., input validation).
+            
         }
 
         private void txtNumeroTarjeta_TextChanged(object sender, EventArgs e)

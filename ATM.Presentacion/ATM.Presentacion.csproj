@@ -58,6 +58,12 @@
     <Compile Include="FrmDepositar.Designer.cs">
       <DependentUpon>FrmDepositar.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmInformacionCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmInformacionCliente.Designer.cs">
+      <DependentUpon>FrmInformacionCliente.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmLoginATM.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -89,6 +95,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmDepositar.resx">
       <DependentUpon>FrmDepositar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmInformacionCliente.resx">
+      <DependentUpon>FrmInformacionCliente.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmLoginATM.resx">
       <DependentUpon>FrmLoginATM.cs</DependentUpon>

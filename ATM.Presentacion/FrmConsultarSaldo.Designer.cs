@@ -63,6 +63,7 @@
             this.dgvSaldo.Name = "dgvSaldo";
             this.dgvSaldo.Size = new System.Drawing.Size(772, 316);
             this.dgvSaldo.TabIndex = 3;
+            this.dgvSaldo.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvSaldo_CellContentClick);
             // 
             // FrmConsultarSaldo
             // 

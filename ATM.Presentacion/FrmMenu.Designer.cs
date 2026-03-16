@@ -32,12 +32,13 @@
             this.btnMovimientos = new System.Windows.Forms.Button();
             this.btnSalir = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnConsultarSaldo
             // 
             this.btnConsultarSaldo.Font = new System.Drawing.Font("Tw Cen MT", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnConsultarSaldo.Location = new System.Drawing.Point(81, 260);
+            this.btnConsultarSaldo.Location = new System.Drawing.Point(12, 260);
             this.btnConsultarSaldo.Name = "btnConsultarSaldo";
             this.btnConsultarSaldo.Size = new System.Drawing.Size(157, 33);
             this.btnConsultarSaldo.TabIndex = 0;
@@ -48,7 +49,7 @@
             // btnDepositar
             // 
             this.btnDepositar.Font = new System.Drawing.Font("Tw Cen MT", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDepositar.Location = new System.Drawing.Point(238, 260);
+            this.btnDepositar.Location = new System.Drawing.Point(180, 260);
             this.btnDepositar.Name = "btnDepositar";
             this.btnDepositar.Size = new System.Drawing.Size(109, 33);
             this.btnDepositar.TabIndex = 0;
@@ -59,7 +60,7 @@
             // btnRetirar
             // 
             this.btnRetirar.Font = new System.Drawing.Font("Tw Cen MT", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRetirar.Location = new System.Drawing.Point(352, 260);
+            this.btnRetirar.Location = new System.Drawing.Point(304, 260);
             this.btnRetirar.Name = "btnRetirar";
             this.btnRetirar.Size = new System.Drawing.Size(109, 33);
             this.btnRetirar.TabIndex = 1;
@@ -70,7 +71,7 @@
             // btnMovimientos
             // 
             this.btnMovimientos.Font = new System.Drawing.Font("Tw Cen MT", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnMovimientos.Location = new System.Drawing.Point(467, 260);
+            this.btnMovimientos.Location = new System.Drawing.Point(428, 260);
             this.btnMovimientos.Name = "btnMovimientos";
             this.btnMovimientos.Size = new System.Drawing.Size(128, 31);
             this.btnMovimientos.TabIndex = 2;
@@ -81,7 +82,7 @@
             // btnSalir
             // 
             this.btnSalir.Font = new System.Drawing.Font("Tw Cen MT", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSalir.Location = new System.Drawing.Point(606, 259);
+            this.btnSalir.Location = new System.Drawing.Point(348, 350);
             this.btnSalir.Name = "btnSalir";
             this.btnSalir.Size = new System.Drawing.Size(109, 33);
             this.btnSalir.TabIndex = 3;
@@ -99,11 +100,23 @@
             this.label1.TabIndex = 4;
             this.label1.Text = "Bienvenido al Cajero Autmotico DJRS";
             // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Tw Cen MT", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(571, 261);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(207, 31);
+            this.button1.TabIndex = 5;
+            this.button1.Text = "Informacion del cliente";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // FrmMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnSalir);
             this.Controls.Add(this.btnMovimientos);
@@ -126,5 +139,6 @@
         private System.Windows.Forms.Button btnMovimientos;
         private System.Windows.Forms.Button btnSalir;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button button1;
     }
 }

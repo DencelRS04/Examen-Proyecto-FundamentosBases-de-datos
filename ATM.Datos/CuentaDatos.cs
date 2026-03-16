@@ -16,12 +16,7 @@ namespace ATM.Datos
             using (SqlConnection cn = conexion.ObtenerConexion())
             {
                 string query = @"SELECT 
-                                    C.Id_cuenta,
-                                    C.Id_cliente,
                                     C.Numero_cuenta,
-                                    CL.Nombre,
-                                    CL.Apellido1,
-                                    CL.Apellido2,
                                     TC.Descripcion AS Tipo_cuenta,
                                     C.Saldo,
                                     CASE 
@@ -29,8 +24,43 @@ namespace ATM.Datos
                                         ELSE 'Inactiva'
                                     END AS Estado
                                  FROM Cuentas C
-                                 INNER JOIN Clientes CL ON C.Id_cliente = CL.Id_cliente
-                                 INNER JOIN TipoCuenta TC ON C.Id_tipo_cuenta = TC.Id_tipo_cuenta
+                                 INNER JOIN TipoCuenta TC 
+                                    ON C.Id_tipo_cuenta = TC.Id_tipo_cuenta
+                                 WHERE C.Numero_cuenta = @NumeroCuenta";
+
+                SqlCommand cmd = new SqlCommand(query, cn);
+                cmd.Parameters.AddWithValue("@NumeroCuenta", numeroCuenta);
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(dt);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarInformacionCliente(string numeroCuenta)
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection cn = conexion.ObtenerConexion())
+            {
+                string query = @"SELECT
+                                    CL.Id_cliente,
+                                    CL.Nombre,
+                                    CL.Apellido1,
+                                    CL.Apellido2,
+                                    C.Numero_cuenta,
+                                    TC.Descripcion AS Tipo_cuenta,
+                                    C.Saldo,
+                                    CASE 
+                                        WHEN C.Estado = 1 THEN 'Activa'
+                                        ELSE 'Inactiva'
+                                    END AS Estado
+                                 FROM Clientes CL
+                                 INNER JOIN Cuentas C 
+                                    ON CL.Id_cliente = C.Id_cliente
+                                 INNER JOIN TipoCuenta TC 
+                                    ON C.Id_tipo_cuenta = TC.Id_tipo_cuenta
                                  WHERE C.Numero_cuenta = @NumeroCuenta";
 
                 SqlCommand cmd = new SqlCommand(query, cn);
@@ -167,6 +197,30 @@ namespace ATM.Datos
                     return ex.Message;
                 }
             }
+        }
+        public DataTable ObtenerDatosCuentaPorNumero(string numeroCuenta)
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection cn = conexion.ObtenerConexion())
+            {
+                string query = @"SELECT 
+                            Id_cuenta,
+                            Id_cliente,
+                            Numero_cuenta,
+                            Saldo,
+                            Estado
+                         FROM Cuentas
+                         WHERE Numero_cuenta = @NumeroCuenta";
+
+                SqlCommand cmd = new SqlCommand(query, cn);
+                cmd.Parameters.AddWithValue("@NumeroCuenta", numeroCuenta);
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(dt);
+            }
+
+            return dt;
         }
 
         public DataTable ConsultarMovimientos(string numeroCuenta)

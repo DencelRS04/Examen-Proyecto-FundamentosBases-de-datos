@@ -74,8 +74,7 @@ namespace ATM.Presentacion
             }
 
             // Obtain account and client ids from the account number
-            DataTable dt = datos.ConsultarSaldo(numeroCuenta);
-
+            DataTable dt = datos.ObtenerDatosCuentaPorNumero(numeroCuenta);
             if (dt == null || dt.Rows.Count == 0 || dt.Rows[0]["Id_cuenta"] == null || dt.Rows[0]["Id_cuenta"] == DBNull.Value)
             {
                 MessageBox.Show("Cuenta no encontrada.");
@@ -131,6 +130,11 @@ namespace ATM.Presentacion
             {
                 e.Handled = true;
             }
+        }
+
+        private void FrmRetirar_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

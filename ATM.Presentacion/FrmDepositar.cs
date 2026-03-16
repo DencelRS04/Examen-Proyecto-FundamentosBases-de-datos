@@ -74,8 +74,7 @@ namespace ATM.Presentacion
             }
 
             // Obtener Id_cuenta e Id_cliente antes de llamar a Depositar
-            DataTable dt = datos.ConsultarSaldo(numeroCuenta);
-            if (dt == null || dt.Rows.Count == 0)
+            DataTable dt = datos.ObtenerDatosCuentaPorNumero(numeroCuenta); if (dt == null || dt.Rows.Count == 0)
             {
                 MessageBox.Show("No se encontró la cuenta. Verifique el número de cuenta.");
                 txtNumeroCuenta.Focus();
@@ -129,6 +128,11 @@ namespace ATM.Presentacion
             {
                 e.Handled = true;
             }
+        }
+
+        private void FrmDepositar_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

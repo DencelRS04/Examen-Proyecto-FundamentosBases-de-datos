@@ -116,6 +116,7 @@
             this.Controls.Add(this.label1);
             this.Name = "FrmDepositar";
             this.Text = "FrmDepositar";
+            this.Load += new System.EventHandler(this.FrmDepositar_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

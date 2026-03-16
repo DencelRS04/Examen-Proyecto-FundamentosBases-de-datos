@@ -27,6 +27,7 @@ namespace ATM.Presentacion
             dgvSaldo.AllowUserToAddRows = false;
             dgvSaldo.AllowUserToDeleteRows = false;
             dgvSaldo.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvSaldo.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
         private void btnConsultar_Click(object sender, EventArgs e)
@@ -51,16 +52,18 @@ namespace ATM.Presentacion
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-
         }
 
         private void txtNumeroCuenta_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // Allow only digits and control characters (e.g., backspace)
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
             {
                 e.Handled = true;
             }
+        }
+
+        private void dgvSaldo_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
         }
     }
 }

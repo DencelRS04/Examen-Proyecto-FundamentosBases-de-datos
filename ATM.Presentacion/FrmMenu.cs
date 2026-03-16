@@ -45,7 +45,12 @@ namespace ATM.Presentacion
 
         private void FrmMenu_Load(object sender, EventArgs e)
         {
-            // Optional initialization when menu loads.
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            FrmInformacionCliente frm = new FrmInformacionCliente(sesion);
+            frm.ShowDialog();
         }
     }
 }
