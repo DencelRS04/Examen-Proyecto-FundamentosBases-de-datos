@@ -1,5 +1,4 @@
-﻿using ATM.Entidades;
-using System;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -24,9 +23,33 @@ namespace ATM.Datos
                                         ELSE 'Inactiva'
                                     END AS Estado
                                  FROM Cuentas C
-                                 INNER JOIN TipoCuenta TC 
-                                    ON C.Id_tipo_cuenta = TC.Id_tipo_cuenta
+                                 INNER JOIN TipoCuenta TC ON C.Id_tipo_cuenta = TC.Id_tipo_cuenta
                                  WHERE C.Numero_cuenta = @NumeroCuenta";
+
+                SqlCommand cmd = new SqlCommand(query, cn);
+                cmd.Parameters.AddWithValue("@NumeroCuenta", numeroCuenta);
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(dt);
+            }
+
+            return dt;
+        }
+
+        public DataTable ObtenerDatosCuentaPorNumero(string numeroCuenta)
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection cn = conexion.ObtenerConexion())
+            {
+                string query = @"SELECT
+                                    Id_cuenta,
+                                    Id_cliente,
+                                    Numero_cuenta,
+                                    Saldo,
+                                    Estado
+                                 FROM Cuentas
+                                 WHERE Numero_cuenta = @NumeroCuenta";
 
                 SqlCommand cmd = new SqlCommand(query, cn);
                 cmd.Parameters.AddWithValue("@NumeroCuenta", numeroCuenta);
@@ -49,6 +72,7 @@ namespace ATM.Datos
                                     CL.Nombre,
                                     CL.Apellido1,
                                     CL.Apellido2,
+                                    CL.Direccion,
                                     C.Numero_cuenta,
                                     TC.Descripcion AS Tipo_cuenta,
                                     C.Saldo,
@@ -57,10 +81,8 @@ namespace ATM.Datos
                                         ELSE 'Inactiva'
                                     END AS Estado
                                  FROM Clientes CL
-                                 INNER JOIN Cuentas C 
-                                    ON CL.Id_cliente = C.Id_cliente
-                                 INNER JOIN TipoCuenta TC 
-                                    ON C.Id_tipo_cuenta = TC.Id_tipo_cuenta
+                                 INNER JOIN Cuentas C ON CL.Id_cliente = C.Id_cliente
+                                 INNER JOIN TipoCuenta TC ON C.Id_tipo_cuenta = TC.Id_tipo_cuenta
                                  WHERE C.Numero_cuenta = @NumeroCuenta";
 
                 SqlCommand cmd = new SqlCommand(query, cn);
@@ -73,7 +95,7 @@ namespace ATM.Datos
             return dt;
         }
 
-        public bool Depositar(int idCuenta, int idCliente, decimal monto, string descripcion)
+        public bool Depositar(int idCuenta, decimal monto, string descripcion)
         {
             using (SqlConnection cn = conexion.ObtenerConexion())
             {
@@ -105,12 +127,11 @@ namespace ATM.Datos
                     }
 
                     string insert = @"INSERT INTO Movimientos
-                                      (Id_cliente, Id_cuenta, Fecha, Id_tipo_movimiento, Monto, Descripcion)
+                                      (Id_cuenta, Fecha, Id_tipo_movimiento, Monto, Descripcion)
                                       VALUES
-                                      (@IdCliente, @IdCuenta, GETDATE(), 1, @Monto, @Descripcion)";
+                                      (@IdCuenta, GETDATE(), 1, @Monto, @Descripcion)";
 
                     SqlCommand cmdInsert = new SqlCommand(insert, cn, tr);
-                    cmdInsert.Parameters.AddWithValue("@IdCliente", idCliente);
                     cmdInsert.Parameters.AddWithValue("@IdCuenta", idCuenta);
                     cmdInsert.Parameters.AddWithValue("@Monto", monto);
                     cmdInsert.Parameters.AddWithValue("@Descripcion", descripcion);
@@ -127,7 +148,7 @@ namespace ATM.Datos
             }
         }
 
-        public string Retirar(int idCuenta, int idCliente, decimal monto, string descripcion)
+        public string Retirar(int idCuenta, decimal monto, string descripcion)
         {
             using (SqlConnection cn = conexion.ObtenerConexion())
             {
@@ -177,12 +198,11 @@ namespace ATM.Datos
                     cmdUpdate.ExecuteNonQuery();
 
                     string insert = @"INSERT INTO Movimientos
-                                      (Id_cliente, Id_cuenta, Fecha, Id_tipo_movimiento, Monto, Descripcion)
+                                      (Id_cuenta, Fecha, Id_tipo_movimiento, Monto, Descripcion)
                                       VALUES
-                                      (@IdCliente, @IdCuenta, GETDATE(), 2, @Monto, @Descripcion)";
+                                      (@IdCuenta, GETDATE(), 2, @Monto, @Descripcion)";
 
                     SqlCommand cmdInsert = new SqlCommand(insert, cn, tr);
-                    cmdInsert.Parameters.AddWithValue("@IdCliente", idCliente);
                     cmdInsert.Parameters.AddWithValue("@IdCuenta", idCuenta);
                     cmdInsert.Parameters.AddWithValue("@Monto", monto);
                     cmdInsert.Parameters.AddWithValue("@Descripcion", descripcion);
@@ -197,30 +217,6 @@ namespace ATM.Datos
                     return ex.Message;
                 }
             }
-        }
-        public DataTable ObtenerDatosCuentaPorNumero(string numeroCuenta)
-        {
-            DataTable dt = new DataTable();
-
-            using (SqlConnection cn = conexion.ObtenerConexion())
-            {
-                string query = @"SELECT 
-                            Id_cuenta,
-                            Id_cliente,
-                            Numero_cuenta,
-                            Saldo,
-                            Estado
-                         FROM Cuentas
-                         WHERE Numero_cuenta = @NumeroCuenta";
-
-                SqlCommand cmd = new SqlCommand(query, cn);
-                cmd.Parameters.AddWithValue("@NumeroCuenta", numeroCuenta);
-
-                SqlDataAdapter da = new SqlDataAdapter(cmd);
-                da.Fill(dt);
-            }
-
-            return dt;
         }
 
         public DataTable ConsultarMovimientos(string numeroCuenta)

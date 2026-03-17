@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Windows.Forms;
 using System.Data;
+using System.Windows.Forms;
 using ATM.Datos;
 using ATM.Entidades;
 
@@ -8,19 +8,24 @@ namespace ATM.Presentacion
 {
     public partial class FrmDepositar : Form
     {
-        CuentaDatos datos = new CuentaDatos();
+        private CuentaDatos datos = new CuentaDatos();
+        private SesionATM sesion;
 
         public FrmDepositar()
         {
             InitializeComponent();
         }
 
-        // Constructor overload to accept a session and prefill the account number
         public FrmDepositar(SesionATM sesionActual)
         {
             InitializeComponent();
+            sesion = sesionActual;
+
             if (sesionActual != null)
+            {
                 txtNumeroCuenta.Text = sesionActual.NumeroCuenta;
+                txtNumeroCuenta.ReadOnly = true;
+            }
         }
 
         private void btnConfirmar_Click(object sender, EventArgs e)
@@ -73,23 +78,34 @@ namespace ATM.Presentacion
                 descripcion = "Depósito en cajero";
             }
 
-            // Obtener Id_cuenta e Id_cliente antes de llamar a Depositar
-            DataTable dt = datos.ObtenerDatosCuentaPorNumero(numeroCuenta); if (dt == null || dt.Rows.Count == 0)
+            DataTable dt = datos.ObtenerDatosCuentaPorNumero(numeroCuenta);
+
+            if (dt == null || dt.Rows.Count == 0)
             {
                 MessageBox.Show("No se encontró la cuenta. Verifique el número de cuenta.");
                 txtNumeroCuenta.Focus();
                 return;
             }
 
-            int idCuenta = Convert.ToInt32(dt.Rows[0]["Id_cuenta"]);
-            int idCliente = Convert.ToInt32(dt.Rows[0]["Id_cliente"]);
+            if (dt.Rows[0]["Id_cuenta"] == null || dt.Rows[0]["Id_cuenta"] == DBNull.Value)
+            {
+                MessageBox.Show("No se pudo obtener la cuenta.");
+                txtNumeroCuenta.Focus();
+                return;
+            }
 
-            bool resultado = datos.Depositar(idCuenta, idCliente, monto, descripcion);
+            int idCuenta = Convert.ToInt32(dt.Rows[0]["Id_cuenta"]);
+            bool resultado = datos.Depositar(idCuenta, monto, descripcion);
 
             if (resultado)
             {
                 MessageBox.Show("Depósito realizado correctamente.");
                 LimpiarCampos();
+
+                if (sesion != null)
+                {
+                    txtNumeroCuenta.Text = sesion.NumeroCuenta;
+                }
             }
             else
             {
@@ -100,10 +116,19 @@ namespace ATM.Presentacion
 
         private void LimpiarCampos()
         {
-            txtNumeroCuenta.Clear();
-            txtMonto.Clear();
-            txtDescripcion.Clear();
-            txtNumeroCuenta.Focus();
+            if (txtNumeroCuenta.ReadOnly)
+            {
+                txtMonto.Clear();
+                txtDescripcion.Clear();
+                txtMonto.Focus();
+            }
+            else
+            {
+                txtNumeroCuenta.Clear();
+                txtMonto.Clear();
+                txtDescripcion.Clear();
+                txtNumeroCuenta.Focus();
+            }
         }
 
         private void txtNumeroCuenta_KeyPress(object sender, KeyPressEventArgs e)
@@ -132,7 +157,6 @@ namespace ATM.Presentacion
 
         private void FrmDepositar_Load(object sender, EventArgs e)
         {
-
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Data.SqlClient;
+﻿using System;
+using System.Data.SqlClient;
 using ATM.Entidades;
 
 namespace ATM.Datos
@@ -16,11 +17,16 @@ namespace ATM.Datos
             {
                 cn.Open();
 
-                string query = @"SELECT Id_cuenta, Id_cliente, Numero_cuenta, Pin, IntentosFallidos, Estado
-                         FROM Cuentas
-                         WHERE Numero_tarjeta = @NumeroTarjeta";
+                string queryTarjeta = @"SELECT 
+                                            T.Id_tarjeta,
+                                            T.Id_cuenta,
+                                            T.Pin,
+                                            T.IntentosFallidos,
+                                            T.Estado
+                                        FROM Tarjetas T
+                                        WHERE T.Numero_tarjeta = @NumeroTarjeta";
 
-                SqlCommand cmd = new SqlCommand(query, cn);
+                SqlCommand cmd = new SqlCommand(queryTarjeta, cn);
                 cmd.Parameters.AddWithValue("@NumeroTarjeta", numeroTarjeta);
 
                 SqlDataReader dr = cmd.ExecuteReader();
@@ -31,70 +37,84 @@ namespace ATM.Datos
                     return null;
                 }
 
-                int idCuenta = (int)dr["Id_cuenta"];
-                int idCliente = (int)dr["Id_cliente"];
-                string numeroCuenta = dr["Numero_cuenta"].ToString();
+                int idTarjeta = Convert.ToInt32(dr["Id_tarjeta"]);
+                int idCuenta = Convert.ToInt32(dr["Id_cuenta"]);
                 string pinDB = dr["Pin"].ToString();
-                int idxIntentos = dr.GetOrdinal("IntentosFallidos");
-                int intentos = dr.IsDBNull(idxIntentos) ? 0 : dr.GetInt32(idxIntentos);
-                bool estado = (bool)dr["Estado"];
+                int intentosFallidos = Convert.ToInt32(dr["IntentosFallidos"]);
+                bool estadoTarjeta = Convert.ToBoolean(dr["Estado"]);
 
                 dr.Close();
 
-                if (!estado)
+                if (!estadoTarjeta)
                 {
-                    mensaje = "Tarjeta bloqueada.";
+                    mensaje = "La tarjeta está bloqueada.";
                     return null;
                 }
 
-                if (pin != pinDB)
+                if (pinDB != pin)
                 {
-                    intentos++;
+                    intentosFallidos++;
 
-                    string updateIntento = @"UPDATE Cuentas
-                                     SET IntentosFallidos = @Intentos
-                                     WHERE Id_cuenta = @IdCuenta";
+                    string updateIntentos = @"UPDATE Tarjetas
+                                              SET IntentosFallidos = @Intentos
+                                              WHERE Id_tarjeta = @IdTarjeta";
 
-                    SqlCommand cmdIntento = new SqlCommand(updateIntento, cn);
-                    cmdIntento.Parameters.AddWithValue("@Intentos", intentos);
-                    cmdIntento.Parameters.AddWithValue("@IdCuenta", idCuenta);
-                    cmdIntento.ExecuteNonQuery();
+                    SqlCommand cmdIntentos = new SqlCommand(updateIntentos, cn);
+                    cmdIntentos.Parameters.AddWithValue("@Intentos", intentosFallidos);
+                    cmdIntentos.Parameters.AddWithValue("@IdTarjeta", idTarjeta);
+                    cmdIntentos.ExecuteNonQuery();
 
-                    if (intentos >= 3)
+                    if (intentosFallidos >= 3)
                     {
-                        string bloquear = @"UPDATE Cuentas
-                                    SET Estado = 0
-                                    WHERE Id_cuenta = @IdCuenta";
+                        string bloquear = @"UPDATE Tarjetas
+                                            SET Estado = 0
+                                            WHERE Id_tarjeta = @IdTarjeta";
 
                         SqlCommand cmdBloquear = new SqlCommand(bloquear, cn);
-                        cmdBloquear.Parameters.AddWithValue("@IdCuenta", idCuenta);
+                        cmdBloquear.Parameters.AddWithValue("@IdTarjeta", idTarjeta);
                         cmdBloquear.ExecuteNonQuery();
 
                         mensaje = "Tarjeta bloqueada por 3 intentos fallidos.";
-                    }
-                    else
-                    {
-                        mensaje = "PIN incorrecto. Intentos: " + intentos;
+                        return null;
                     }
 
+                    mensaje = "PIN incorrecto.";
                     return null;
                 }
 
-                string resetIntentos = @"UPDATE Cuentas
-                                 SET IntentosFallidos = 0
-                                 WHERE Id_cuenta = @IdCuenta";
+                string resetIntentos = @"UPDATE Tarjetas
+                                         SET IntentosFallidos = 0
+                                         WHERE Id_tarjeta = @IdTarjeta";
 
                 SqlCommand cmdReset = new SqlCommand(resetIntentos, cn);
-                cmdReset.Parameters.AddWithValue("@IdCuenta", idCuenta);
+                cmdReset.Parameters.AddWithValue("@IdTarjeta", idTarjeta);
                 cmdReset.ExecuteNonQuery();
 
-                sesion = new SesionATM
+                string querySesion = @"SELECT 
+                                            C.Id_cuenta,
+                                            C.Id_cliente,
+                                            C.Numero_cuenta
+                                       FROM Cuentas C
+                                       WHERE C.Id_cuenta = @IdCuenta";
+
+                SqlCommand cmdSesion = new SqlCommand(querySesion, cn);
+                cmdSesion.Parameters.AddWithValue("@IdCuenta", idCuenta);
+
+                SqlDataReader drSesion = cmdSesion.ExecuteReader();
+
+                if (drSesion.Read())
                 {
-                    IdCuenta = idCuenta,
-                    IdCliente = idCliente,
-                    NumeroCuenta = numeroCuenta,
-                    NumeroTarjeta = numeroTarjeta
-                };
+                    sesion = new SesionATM
+                    {
+                        IdCuenta = Convert.ToInt32(drSesion["Id_cuenta"]),
+                        IdCliente = Convert.ToInt32(drSesion["Id_cliente"]),
+                        IdTarjeta = idTarjeta,
+                        NumeroCuenta = drSesion["Numero_cuenta"].ToString(),
+                        NumeroTarjeta = numeroTarjeta
+                    };
+                }
+
+                drSesion.Close();
             }
 
             return sesion;

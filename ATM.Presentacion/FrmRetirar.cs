@@ -1,26 +1,31 @@
 ﻿using System;
+using System.Data;
 using System.Windows.Forms;
 using ATM.Datos;
-using System.Data;
 using ATM.Entidades;
 
 namespace ATM.Presentacion
 {
     public partial class FrmRetirar : Form
     {
-        CuentaDatos datos = new CuentaDatos();
+        private CuentaDatos datos = new CuentaDatos();
+        private SesionATM sesion;
 
         public FrmRetirar()
         {
             InitializeComponent();
         }
 
-        // Constructor overload to accept a session and prefill the account number
         public FrmRetirar(SesionATM sesionActual)
         {
             InitializeComponent();
+            sesion = sesionActual;
+
             if (sesionActual != null)
+            {
                 txtNumeroCuenta.Text = sesionActual.NumeroCuenta;
+                txtNumeroCuenta.ReadOnly = true;
+            }
         }
 
         private void btnRetirar_Click(object sender, EventArgs e)
@@ -73,8 +78,8 @@ namespace ATM.Presentacion
                 descripcion = "Retiro en cajero";
             }
 
-            // Obtain account and client ids from the account number
             DataTable dt = datos.ObtenerDatosCuentaPorNumero(numeroCuenta);
+
             if (dt == null || dt.Rows.Count == 0 || dt.Rows[0]["Id_cuenta"] == null || dt.Rows[0]["Id_cuenta"] == DBNull.Value)
             {
                 MessageBox.Show("Cuenta no encontrada.");
@@ -84,14 +89,17 @@ namespace ATM.Presentacion
             }
 
             int idCuenta = Convert.ToInt32(dt.Rows[0]["Id_cuenta"]);
-            int idCliente = Convert.ToInt32(dt.Rows[0]["Id_cliente"]);
-
-            string resultado = datos.Retirar(idCuenta, idCliente, monto, descripcion);
+            string resultado = datos.Retirar(idCuenta, monto, descripcion);
 
             if (resultado == "OK")
             {
                 MessageBox.Show("Retiro realizado correctamente.");
                 LimpiarCampos();
+
+                if (sesion != null)
+                {
+                    txtNumeroCuenta.Text = sesion.NumeroCuenta;
+                }
             }
             else
             {
@@ -102,10 +110,19 @@ namespace ATM.Presentacion
 
         private void LimpiarCampos()
         {
-            txtNumeroCuenta.Clear();
-            txtMonto.Clear();
-            txtDescripcion.Clear();
-            txtNumeroCuenta.Focus();
+            if (txtNumeroCuenta.ReadOnly)
+            {
+                txtMonto.Clear();
+                txtDescripcion.Clear();
+                txtMonto.Focus();
+            }
+            else
+            {
+                txtNumeroCuenta.Clear();
+                txtMonto.Clear();
+                txtDescripcion.Clear();
+                txtNumeroCuenta.Focus();
+            }
         }
 
         private void txtNumeroCuenta_KeyPress(object sender, KeyPressEventArgs e)
@@ -134,7 +151,6 @@ namespace ATM.Presentacion
 
         private void FrmRetirar_Load(object sender, EventArgs e)
         {
-
         }
     }
 }

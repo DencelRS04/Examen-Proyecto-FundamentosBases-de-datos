@@ -7,7 +7,7 @@ namespace ATM.Presentacion
 {
     public partial class FrmLoginATM : Form
     {
-        LoginDatos loginDatos = new LoginDatos();
+        private LoginDatos loginDatos = new LoginDatos();
 
         public FrmLoginATM()
         {
@@ -26,6 +26,14 @@ namespace ATM.Presentacion
                 return;
             }
 
+            if (numeroTarjeta.Length != 16)
+            {
+                MessageBox.Show("El número de tarjeta debe tener 16 dígitos.");
+                txtNumeroTarjeta.Focus();
+                txtNumeroTarjeta.SelectAll();
+                return;
+            }
+
             if (pin == "")
             {
                 MessageBox.Show("Digite el PIN.");
@@ -33,8 +41,15 @@ namespace ATM.Presentacion
                 return;
             }
 
-            string mensaje;
+            if (pin.Length != 4)
+            {
+                MessageBox.Show("El PIN debe tener 4 dígitos.");
+                txtPin.Focus();
+                txtPin.SelectAll();
+                return;
+            }
 
+            string mensaje;
             SesionATM sesion = loginDatos.ValidarTarjetaPin(numeroTarjeta, pin, out mensaje);
 
             if (sesion != null)
@@ -43,6 +58,10 @@ namespace ATM.Presentacion
                 this.Hide();
                 menu.ShowDialog();
                 this.Show();
+
+                txtPin.Clear();
+                txtNumeroTarjeta.Clear();
+                txtNumeroTarjeta.Focus();
             }
             else
             {
@@ -79,12 +98,10 @@ namespace ATM.Presentacion
 
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
-            
         }
 
         private void txtNumeroTarjeta_TextChanged(object sender, EventArgs e)
         {
-
         }
     }
 }

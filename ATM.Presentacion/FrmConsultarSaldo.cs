@@ -1,7 +1,7 @@
-﻿using System;
-using System.Windows.Forms;
-using ATM.Datos;
+﻿using ATM.Datos;
 using ATM.Entidades;
+using System;
+using System.Windows.Forms;
 
 namespace ATM.Presentacion
 {
@@ -14,6 +14,7 @@ namespace ATM.Presentacion
         {
             InitializeComponent();
             sesion = sesionActual;
+
         }
 
         private void FrmConsultarSaldo_Load(object sender, EventArgs e)
@@ -21,6 +22,7 @@ namespace ATM.Presentacion
             if (sesion != null)
             {
                 lblCuenta.Text = "Cuenta actual: " + sesion.NumeroCuenta;
+                dgvSaldo.DataSource = datos.ConsultarSaldo(sesion.NumeroCuenta);
             }
 
             dgvSaldo.ReadOnly = true;
@@ -30,29 +32,15 @@ namespace ATM.Presentacion
             dgvSaldo.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
-        private void btnConsultar_Click(object sender, EventArgs e)
-        {
-            if (sesion == null)
-            {
-                MessageBox.Show("No hay una sesión activa.");
-                return;
-            }
 
-            dgvSaldo.DataSource = datos.ConsultarSaldo(sesion.NumeroCuenta);
 
-            if (dgvSaldo.Rows.Count == 0 || dgvSaldo.Rows[0].Cells[0].Value == null)
-            {
-                MessageBox.Show("Cuenta no encontrada.");
-            }
-        }
+        /// private void lblCuenta_Click(object sender, EventArgs e)
+        ///{
+        ///}
 
-        private void lblCuenta_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-        }
+        ///private void textBox1_TextChanged(object sender, EventArgs e)
+        ///{
+        ///}
 
         private void txtNumeroCuenta_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -62,8 +50,8 @@ namespace ATM.Presentacion
             }
         }
 
-        private void dgvSaldo_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-        }
+        ///private void dgvSaldo_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        ///{
+        ///}
     }
 }

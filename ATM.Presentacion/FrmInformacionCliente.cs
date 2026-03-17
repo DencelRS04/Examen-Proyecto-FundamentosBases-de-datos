@@ -23,6 +23,7 @@ namespace ATM.Presentacion
             if (sesion != null)
             {
                 lblCuenta.Text = "Cuenta actual: " + sesion.NumeroCuenta;
+                dgvCliente.DataSource = datos.ConsultarInformacionCliente(sesion.NumeroCuenta);
             }
 
             dgvCliente.ReadOnly = true;

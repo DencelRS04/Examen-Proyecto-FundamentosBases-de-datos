@@ -28,22 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnConsultar = new System.Windows.Forms.Button();
             this.dgvCliente = new System.Windows.Forms.DataGridView();
             this.lblCuenta = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCliente)).BeginInit();
             this.SuspendLayout();
-            // 
-            // btnConsultar
-            // 
-            this.btnConsultar.Font = new System.Drawing.Font("Tw Cen MT", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnConsultar.Location = new System.Drawing.Point(605, 85);
-            this.btnConsultar.Name = "btnConsultar";
-            this.btnConsultar.Size = new System.Drawing.Size(153, 38);
-            this.btnConsultar.TabIndex = 0;
-            this.btnConsultar.Text = "Consultar";
-            this.btnConsultar.UseVisualStyleBackColor = true;
-            this.btnConsultar.Click += new System.EventHandler(this.btnConsultar_Click);
             // 
             // dgvCliente
             // 
@@ -70,7 +58,6 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.lblCuenta);
             this.Controls.Add(this.dgvCliente);
-            this.Controls.Add(this.btnConsultar);
             this.Name = "FrmInformacionCliente";
             this.Text = "FrmInformacionCliente";
             this.Load += new System.EventHandler(this.FrmInformacionCliente_Load);
@@ -81,8 +68,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Button btnConsultar;
         private System.Windows.Forms.DataGridView dgvCliente;
         private System.Windows.Forms.Label lblCuenta;
     }

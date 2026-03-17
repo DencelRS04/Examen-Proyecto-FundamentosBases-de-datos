@@ -43,9 +43,9 @@
             this.label1.Font = new System.Drawing.Font("Tw Cen MT", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(38, 97);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(159, 22);
+            this.label1.Size = new System.Drawing.Size(157, 22);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Numero de cuenta:";
+            this.label1.Text = "Numero de tarjeta:";
             // 
             // label2
             // 

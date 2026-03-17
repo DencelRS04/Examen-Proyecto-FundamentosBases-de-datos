@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.lblCuenta = new System.Windows.Forms.Label();
-            this.btnConsultar = new System.Windows.Forms.Button();
             this.dgvSaldo = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSaldo)).BeginInit();
             this.SuspendLayout();
@@ -43,18 +42,6 @@
             this.lblCuenta.Size = new System.Drawing.Size(159, 22);
             this.lblCuenta.TabIndex = 0;
             this.lblCuenta.Text = "Numero de cuenta:";
-            this.lblCuenta.Click += new System.EventHandler(this.lblCuenta_Click);
-            // 
-            // btnConsultar
-            // 
-            this.btnConsultar.Font = new System.Drawing.Font("Tw Cen MT", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnConsultar.Location = new System.Drawing.Point(662, 40);
-            this.btnConsultar.Name = "btnConsultar";
-            this.btnConsultar.Size = new System.Drawing.Size(113, 32);
-            this.btnConsultar.TabIndex = 2;
-            this.btnConsultar.Text = "Consultar";
-            this.btnConsultar.UseVisualStyleBackColor = true;
-            this.btnConsultar.Click += new System.EventHandler(this.btnConsultar_Click);
             // 
             // dgvSaldo
             // 
@@ -63,7 +50,6 @@
             this.dgvSaldo.Name = "dgvSaldo";
             this.dgvSaldo.Size = new System.Drawing.Size(772, 316);
             this.dgvSaldo.TabIndex = 3;
-            this.dgvSaldo.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvSaldo_CellContentClick);
             // 
             // FrmConsultarSaldo
             // 
@@ -71,7 +57,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.dgvSaldo);
-            this.Controls.Add(this.btnConsultar);
             this.Controls.Add(this.lblCuenta);
             this.Name = "FrmConsultarSaldo";
             this.Text = "FrmConsultarSaldo";
@@ -85,7 +70,6 @@
         #endregion
 
         private System.Windows.Forms.Label lblCuenta;
-        private System.Windows.Forms.Button btnConsultar;
         private System.Windows.Forms.DataGridView dgvSaldo;
     }
 }
